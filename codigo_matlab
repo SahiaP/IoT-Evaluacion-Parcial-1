@@ -1,0 +1,41 @@
+% Read temperature data from a ThingSpeak channel for three seperate days 
+% and visualize the data in a single plot using the PLOT function. 
+
+% Channel 12397 contains data from the MathWorks Weather Station, located 
+% in Natick, Massachusetts. The data is collected once every minute. 
+% Field 4 contains temperature data. 
+
+% Channel ID to read data from 
+readChannelID = 2442869; 
+% Temperature Field ID 
+myFieldID = 1; 
+% One day date range
+oneDay = [datetime(2024,3,8) datetime(2024,3,9)];
+twoDay = [datetime(2024,3,9) datetime(2024,3,10)];
+threeDay = [datetime(2024,3,10) datetime(2024,3,11)];
+
+
+% Channel Read API Key 
+% If your channel is private, then enter the read API key between the '' below: 
+readAPIKey = 'YWDXI8CWMSR8CHYI'; 
+
+% Read Temperature Data. Learn more about the THINGSPEAKREAD function by 
+% going to the Documentation tab on the right side pane of this page. 
+temperatureDay1 = thingSpeakRead(readChannelID,'Fields',myFieldID, ...
+                                 'dateRange', oneDay, 'ReadKey',readAPIKey); 
+temperatureDay2 = thingSpeakRead(readChannelID,'Fields',myFieldID, ...
+                                 'dateRange', twoDay,'ReadKey',readAPIKey); 
+temperatureDay3 = thingSpeakRead(readChannelID,'Fields',myFieldID, ...
+                                'dateRange', threeDay,'ReadKey',readAPIKey); 
+
+% Create array of durations 
+myTimes1 = minutes(1:length(temperatureDay1));
+myTimes2 = minutes(1:length(temperatureDay2));
+myTimes3 = minutes(1:length(temperatureDay3));
+
+% Visualize the data
+plot(myTimes1,temperatureDay1, myTimes2,temperatureDay2, myTimes3, temperatureDay3);
+legend({'8 - marzo','9 - marzo','10 - marzo'});
+xlabel('TIEMPO');
+ylabel('TEMPERATURA');
+title('3-Day Temperature Comparison');
